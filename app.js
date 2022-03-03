@@ -40,7 +40,7 @@ app.post('/shorturl' , async (req,res) => {
 app.get('/:shorturl' , async (req,res) =>{
     const shorturl = await shorturls.findOne({ short : req.params.shorturl})
     if(shorturl ==null)
-        return res.sendStatus(404)
+        return res.status(404).render('error')
     
     shorturl.clicks++
     shorturl.save()
@@ -54,6 +54,10 @@ app.post('/delete/:id' ,async (req,res) => {
         res.redirect('/')
     } catch (err) {
        console.log(err)
-       return res.sendStatus(404)
+       return res.status(404).render('error')
     }
+})
+
+app.use((req,res) => {
+    res.status(404).render('error')
 })
